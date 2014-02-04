@@ -1,31 +1,37 @@
 program = function+
 
-function = identifier arg_list <b_open> var_decl? statement? return <b_close>
+function = identifier arg_list <b_open> var_decl? statements return <b_close>
 
 arg_list = <p_open> args <p_close>
 
 <args> = identifier? (<comma> identifier)*
 
+expr_list = <p_open> expr? (<comma> expr)* <p_close>
+
 var_decl = <'var'> args <semi-c>
 
 <expr> = constant | identifier | expr binop expr | invocation | 'input'
+       | 'null' | invocation expr_list | identifier expr_list
 
 statement = identifier '=' expr <semi-c>
           | 'output' expr <semi-c>
-          | statement statement
           | 'if' invocation scoped_statement
           | 'if' invocation scoped_statement 'else' scoped_statement
           | 'while' invocation scoped_statement
           | var_decl
 
+<statements> = statement*
+
 invocation = <p_open> expr <p_close>
-scoped_statement = <b_open> statement <b_close>
+scoped_statement = statement
+                 | <b_open> statements <b_close>
+
 return = <'return'> expr <semi-c>;
 
 binop = '+' | '-' | '*' | '/' | '>' | '=='
 
 whitespace = #"\s+"
-identifier = #"[a-zA-Z]+"
+identifier = #"[a-zA-Z]+" | '*' identifier
 constant = '0' | #"[1-9][0-9]*"
 
 p_open = '('

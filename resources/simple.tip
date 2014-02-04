@@ -1,0 +1,1 @@
+map(l,f,z){varr;if(l==null)r=z;elser=(f)(map(*l,f,z));returnr;}foo(i){returni+1;}main(){varh,t,n;t=null;n=42;while(n>0){n=n-1;h=malloc;*h=t;t=h;}returnmap(h,foo,0);}
