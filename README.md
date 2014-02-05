@@ -1,14 +1,18 @@
-# tip
+# TIP
 
-A Clojure library designed to ... well, that part is up to you.
+A barebone compiler for the academic static analysis playground language TIP.
 
-## Usage
+## Purpose
 
-FIXME
+The tip project's current milestone is:
+
+* Split TIP source code into tokens using a lexer.
+* Parse the tokens into an abstract syntax tree.
+
+Future desired features include:
+
+* Actual static analysis on the abstract syntax tree.
 
 ## License
 
-Copyright © 2014 FIXME
-
-Distributed under the Eclipse Public License either version 1.0 or (at
-your option) any later version.
+Let's say GPLv3. Why not?
