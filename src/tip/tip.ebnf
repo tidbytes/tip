@@ -1,30 +1,67 @@
 program = function+
 
-function = identifier arg_list <b_open> var_decl? statements return <b_close>
+function = identifier arg-list <b-open> statements return <b-close>
 
-arg_list = <p_open> args <p_close>
+arg-list = <p-open> args <p-close>
 
 <args> = identifier? (<comma> identifier)*
 
-expr_list = <p_open> expr? (<comma> expr)* <p_close>
+expr-list = <p-open> expr? (<comma> expr)* <p-close>
 
-var_decl = <'var'> args <semi-c>
+var-decl = <'var'> args <semi-c>
 
-<expr> = constant | identifier | expr binop expr | invocation | 'input'
-       | 'null' | invocation expr_list | identifier expr_list
+<expr> = constant | identifier | comparison | calculation | invocation | input
+       | null | dynamic-call | function-call | malloc
 
-statement = identifier '=' expr <semi-c>
-          | 'output' expr <semi-c>
-          | 'if' invocation scoped_statement
-          | 'if' invocation scoped_statement 'else' scoped_statement
-          | 'while' invocation scoped_statement
-          | var_decl
+null = <'null'>
+input = <'input'>
+malloc = <'malloc'>
+
+dynamic-call = <p-open> expr <p-close> expr-list
+function-call = identifier expr-list
+
+<comparison> = equals
+             | greater-than
+             | less-than
+
+equals = expr <'=='> expr
+greater-than = expr <'>'> expr
+less-than = expr <'<'> expr
+
+<calculation> = addition
+              | subtraction
+              | multiplication
+              | division
+
+addition = expr <'+'> expr
+subtraction = expr <'-'> expr
+multiplication = expr <'*'> expr
+division = expr <'/'> expr
+
+<statement> = assignment
+            | output
+            | if-statement
+            | if-statement else-statement
+            | while
+            | var-decl
+
+assignment = identifier <'='> expr <semi-c>
+
+output = <'output'> expr <semi-c>
+
+while = <'while'> <p-open> expr <p-close> statement
+      | <'while'> <p-open> expr <p-close> <b-open> statements <b-close>
+
+if-statement = <'if'> <p-open> expr <p-close> statement
+             | <'if'> <p-open> expr <p-close> <b-open> statements <b-close>
+else-statement = <'else'> statement
+               | <'else'> <b-open> statements <b-close>
 
 <statements> = statement*
 
-invocation = <p_open> expr <p_close>
-scoped_statement = statement
-                 | <b_open> statements <b_close>
+invocation = <p-open> expr <p-close>
+scoped-statement = statement
+                 | <b-open> statements <b-close>
 
 return = <'return'> expr <semi-c>;
 
@@ -34,9 +71,9 @@ whitespace = #"\s+"
 identifier = #"[a-zA-Z]+" | '*' identifier
 constant = '0' | #"[1-9][0-9]*"
 
-p_open = '('
-p_close = ')'
-b_open = '{'
-b_close = '}'
+p-open = '('
+p-close = ')'
+b-open = '{'
+b-close = '}'
 comma = ','
 semi-c = ';'
