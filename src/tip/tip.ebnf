@@ -60,8 +60,6 @@ else-statement = <'else'> statement
 <statements> = statement*
 
 invocation = <p-open> expr <p-close>
-scoped-statement = statement
-                 | <b-open> statements <b-close>
 
 return = <'return'> expr <semi-c>;
 
