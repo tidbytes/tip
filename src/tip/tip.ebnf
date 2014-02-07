@@ -54,7 +54,7 @@ while = <'while'> <p-open> expr <p-close> statement
 
 if-statement = <'if'> <p-open> expr <p-close> statement
              | <'if'> <p-open> expr <p-close> <b-open> statements <b-close>
-else-statement = <'else'> <whitespace?> statement
+else-statement = <'else'> <whitespace> statement
                | <'else'> <b-open> statements <b-close>
 
 <statements> = statement*
