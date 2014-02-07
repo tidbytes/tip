@@ -1,6 +1,6 @@
 program = function+
 
-function = identifier arg-list <b-open> statements return <b-close>
+function = identifier <whitespace?> arg-list <b-open> statements return <b-close>
 
 arg-list = <p-open> args <p-close>
 
@@ -8,7 +8,7 @@ arg-list = <p-open> args <p-close>
 
 expr-list = <p-open> expr? (<comma> expr)* <p-close>
 
-var-decl = <'var'> args <semi-c>
+var-decl = <'var'> <whitespace> args <semi-c>
 
 <expr> = constant | identifier | comparison | calculation | invocation | input
        | null | dynamic-call | function-call | malloc
@@ -24,19 +24,19 @@ function-call = identifier expr-list
              | greater-than
              | less-than
 
-equals = expr <'=='> expr
-greater-than = expr <'>'> expr
-less-than = expr <'<'> expr
+equals = expr <whitespace?> <'=='> <whitespace?> expr
+greater-than = expr <whitespace?> <'>'> <whitespace?> expr
+less-than = expr <whitespace?> <'<'> <whitespace?> expr
 
 <calculation> = addition
               | subtraction
               | multiplication
               | division
 
-addition = expr <'+'> expr
-subtraction = expr <'-'> expr
-multiplication = expr <'*'> expr
-division = expr <'/'> expr
+addition = expr <whitespace?> <'+'> <whitespace?> expr
+subtraction = expr <whitespace?> <'-'> <whitespace?> expr
+multiplication = expr <whitespace?> <'*'> <whitespace?> expr
+division = expr <whitespace?> <'/'> <whitespace?> expr
 
 <statement> = assignment
             | output
@@ -45,7 +45,7 @@ division = expr <'/'> expr
             | while
             | var-decl
 
-assignment = identifier <'='> expr <semi-c>
+assignment = identifier <whitespace?> <'='> <whitespace?> expr <semi-c>
 
 output = <'output'> expr <semi-c>
 
@@ -54,24 +54,24 @@ while = <'while'> <p-open> expr <p-close> statement
 
 if-statement = <'if'> <p-open> expr <p-close> statement
              | <'if'> <p-open> expr <p-close> <b-open> statements <b-close>
-else-statement = <'else'> statement
+else-statement = <'else'> <whitespace> statement
                | <'else'> <b-open> statements <b-close>
 
 <statements> = statement*
 
 invocation = <p-open> expr <p-close>
 
-return = <'return'> expr <semi-c>;
+return = <'return'> <whitespace> expr <semi-c>;
 
 binop = '+' | '-' | '*' | '/' | '>' | '=='
 
 whitespace = #"\s+"
-identifier = #"[a-zA-Z]+" | '*' identifier
+identifier = #"[a-zA-Z]+" | '*' <whitespace?> identifier
 constant = '0' | #"[1-9][0-9]*"
 
-p-open = '('
-p-close = ')'
-b-open = '{'
-b-close = '}'
-comma = ','
-semi-c = ';'
+p-open = <whitespace?> '(' <whitespace?>
+p-close = <whitespace?> ')' <whitespace?>
+b-open = <whitespace?> '{' <whitespace?>
+b-close = <whitespace?> '}' <whitespace?>
+comma = <whitespace?> ',' <whitespace?>
+semi-c = <whitespace?> ';' <whitespace?>
