@@ -65,8 +65,14 @@ return = <'return'> <whitespace> expr <semi-c>;
 
 binop = '+' | '-' | '*' | '/' | '>' | '=='
 
+pointer-identifier = <'*'> <whitespace?> identifier
+
+<pointer-op> = pointer-value | pointer-address
+pointer-value = <'*'> <whitespace?> identifier
+pointer-address = <'&'> <whitespace?> identifier
+
 whitespace = #"\s+"
-identifier = #"[a-zA-Z]+" | '*' <whitespace?> identifier
+identifier = #"[a-zA-Z]+"
 constant = '0' | #"[1-9][0-9]*"
 
 p-open = <whitespace?> '(' <whitespace?>
