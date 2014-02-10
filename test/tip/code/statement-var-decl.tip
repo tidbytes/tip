@@ -1,0 +1,4 @@
+f() {
+	var a,b,c,d;
+	return a;
+}
