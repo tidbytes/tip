@@ -1,4 +1,4 @@
-program = function+
+program = <whitespace?> function+
 
 function = identifier <whitespace?> param-list <b-open> statements return <b-close>
 
