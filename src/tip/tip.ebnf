@@ -1,17 +1,21 @@
 program = function+
 
-function = identifier <whitespace?> arg-list <b-open> statements return <b-close>
+function = identifier <whitespace?> param-list <b-open> statements return <b-close>
 
 arg-list = <p-open> args <p-close>
 
-<args> = identifier? (<comma> identifier)*
+<args> = (identifier? | expr?) (<comma> (identifier | expr))*
+
+param-list = <p-open> params <p-close>
+
+<params> =  identifier? (<comma> identifier)*
 
 expr-list = <p-open> expr? (<comma> expr)* <p-close>
 
 var-decl = <'var'> <whitespace> args <semi-c>
 
 <expr> = constant | identifier | comparison | calculation | invocation | input
-       | null | dynamic-call | function-call | malloc
+       | null | dynamic-call | function-call | malloc | pointer-op
 
 null = <'null'>
 input = <'input'>
@@ -45,7 +49,7 @@ division = expr <whitespace?> <'/'> <whitespace?> expr
             | while
             | var-decl
 
-assignment = identifier <whitespace?> <'='> <whitespace?> expr <semi-c>
+assignment = (identifier | pointer-identifier) <whitespace?> <'='> <whitespace?> expr <semi-c>
 
 output = <'output'> expr <semi-c>
 
