@@ -1,7 +1,8 @@
 (ns tip.parser-test
   (:require [clojure.test :refer :all]
             [midje.sweet :refer :all]
-            [tip.parser :refer [grammar]]))
+            [tip.parser :refer [grammar]]
+            [instaparse.core :refer [failure?]]))
 
 (defn parse-tip
   [filename]
@@ -53,7 +54,8 @@
     (fact "Function calls should be expressions."
       function-call => (contains :program))
     (fact "Allocating memory should be an expression."
-      malloc => (contains :program))))
+      malloc => (contains :program))
+    ))
 
 (facts "About statements"
   (let [assignment (parse-tip "statement-assignment")
@@ -80,3 +82,17 @@
     (fact "While loops should be statements."
       while-short => (contains :program)
       while-block => (contains :program))))
+
+(facts "About pointers"
+  (let [pointer-assignment (parse-tip "pointer-assignment")
+        pointer-expression-address (parse-tip "pointer-expression-address")
+        pointer-expression-value (parse-tip "pointer-expression-value")
+        pointer-parameter (parse-tip "pointer-parameter")]
+    (fact "Pointer assignments should be accepted."
+      pointer-assignment => (contains :program))
+    (fact "Pointer address operation should be accepted."
+      pointer-expression-address => (contains :program))
+    (fact "Pointer value operation should be accepted."
+      pointer-expression-value => (contains :program))
+    (fact "Pointers in function parameters should be rejected."
+      (failure? pointer-parameter) => true)))
