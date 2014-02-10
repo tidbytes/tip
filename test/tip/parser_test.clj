@@ -54,3 +54,29 @@
       function-call => (contains :program))
     (fact "Allocating memory should be an expression."
       malloc => (contains :program))))
+
+(facts "About statements"
+  (let [assignment (parse-tip "statement-assignment")
+        if-short (parse-tip "statement-if")
+        if-block (parse-tip "statement-if-block")
+        if-else-short (parse-tip "statement-if-else")
+        if-else-block (parse-tip "statement-if-else-block")
+        output (parse-tip "statement-output")
+        var-decl (parse-tip "statement-var-decl")
+        while-short (parse-tip "statement-while")
+        while-block (parse-tip "statement-while-block")]
+    (fact "Assignments of values should be statements."
+      assignment => (contains :program))
+    (fact "If statements should be statements."
+      if-short => (contains :program)
+      if-block => (contains :program))
+    (fact "If-then-else statements should be statements."
+      if-else-short => (contains :program)
+      if-else-block => (contains :program))
+    (fact "Writing an expression to output should be a statement"
+      output => (contains :program))
+    (fact "Variable declarations should be statements."
+      var-decl => (contains :program))
+    (fact "While loops should be statements."
+      while-short => (contains :program)
+      while-block => (contains :program))))
