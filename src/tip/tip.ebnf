@@ -4,7 +4,7 @@ function = identifier <whitespace?> param-list <b-open> statements return <b-clo
 
 arg-list = <p-open> args <p-close>
 
-<args> = (identifier? | expr?) (<comma> (identifier | expr))*
+<args> = expr? (<comma> expr)*
 
 param-list = <p-open> params <p-close>
 
@@ -12,7 +12,7 @@ param-list = <p-open> params <p-close>
 
 expr-list = <p-open> expr? (<comma> expr)* <p-close>
 
-var-decl = <'var'> <whitespace> args <semi-c>
+var-decl = <'var'> <whitespace> identifier (<comma> identifier)* <semi-c>
 
 <expr> = constant | identifier | comparison | calculation | invocation | input
        | null | dynamic-call | function-call | malloc | pointer-op
