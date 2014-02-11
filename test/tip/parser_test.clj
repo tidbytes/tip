@@ -31,31 +31,30 @@
         function-call (parse-tip "expression-function-call")
         malloc (parse-tip "expression-malloc")]
     (fact "Constants should be expressions."
-      constants => (contains :program))
+      (failure? constants) => false)
     (fact "Identifiers should be expressions."
-      identifiers => (contains :program))
+      (failure? identifiers) => false)
     (fact "Comparisons should be expressions."
-      comparison1 => (contains :program)
-      comparison2 => (contains :program)
-      comparison3 => (contains :program))
+      (failure? comparison1) => false
+      (failure? comparison2) => false
+      (failure? comparison3) => false)
     (fact "Arithmetic calculations should be expressions."
-      arithmetics1 => (contains :program)
-      arithmetics2 => (contains :program)
-      arithmetics3 => (contains :program)
-      arithmetics4 => (contains :program))
+      (failure? arithmetics1) => false
+      (failure? arithmetics2) => false
+      (failure? arithmetics3) => false
+      (failure? arithmetics4) => false)
     (fact "Parenthesized expressions should be expressions."
-      parentheses => (contains :program))
+      (failure? parentheses) => false)
     (fact "Reading user input should be an expression."
-      input => (contains :program))
+      (failure? input) => false)
     (fact "Null references should be expressions."
-      null => (contains :program))
+      (failure? null) => false)
     (fact "Dynamic function calls should be expressions."
-      dynamic-call => (contains :program))
+      (failure? dynamic-call) => false)
     (fact "Function calls should be expressions."
-      function-call => (contains :program))
+      (failure? function-call) => false)
     (fact "Allocating memory should be an expression."
-      malloc => (contains :program))
-    ))
+      (failure? malloc) => false)))
 
 (facts "About statements"
   (let [assignment (parse-tip "statement-assignment")
@@ -68,20 +67,20 @@
         while-short (parse-tip "statement-while")
         while-block (parse-tip "statement-while-block")]
     (fact "Assignments of values should be statements."
-      assignment => (contains :program))
+      (failure? assignment) => false)
     (fact "If statements should be statements."
-      if-short => (contains :program)
-      if-block => (contains :program))
+      (failure? if-short) => false
+      (failure? if-block) => false)
     (fact "If-then-else statements should be statements."
-      if-else-short => (contains :program)
-      if-else-block => (contains :program))
+      (failure? if-else-short) => false
+      (failure? if-else-block) => false)
     (fact "Writing an expression to output should be a statement"
-      output => (contains :program))
+      (failure? output) => false)
     (fact "Variable declarations should be statements."
-      var-decl => (contains :program))
+      (failure? var-decl) => false)
     (fact "While loops should be statements."
-      while-short => (contains :program)
-      while-block => (contains :program))))
+      (failure? while-short) => false
+      (failure? while-block) => false)))
 
 (facts "About pointers"
   (let [pointer-assignment (parse-tip "pointer-assignment")
@@ -89,10 +88,10 @@
         pointer-expression-value (parse-tip "pointer-expression-value")
         pointer-parameter (parse-tip "pointer-parameter")]
     (fact "Pointer assignments should be accepted."
-      pointer-assignment => (contains :program))
+      (failure? pointer-assignment) => false)
     (fact "Pointer address operation should be accepted."
-      pointer-expression-address => (contains :program))
+      (failure? pointer-expression-address) => false)
     (fact "Pointer value operation should be accepted."
-      pointer-expression-value => (contains :program))
+      (failure? pointer-expression-value) => false)
     (fact "Pointers in function parameters should be rejected."
       (failure? pointer-parameter) => true)))
