@@ -51,7 +51,7 @@ division = expr <whitespace?> <'/'> <whitespace?> expr
 
 assignment = (identifier | pointer-identifier) <whitespace?> <'='> <whitespace?> expr <semi-c>
 
-output = <'output'> expr <semi-c>
+output = <'output'> <whitespace> expr <semi-c>
 
 while = <'while'> <p-open> expr <p-close> statement
       | <'while'> <p-open> expr <p-close> <b-open> statements <b-close>
