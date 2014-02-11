@@ -2,6 +2,10 @@
 
 A barebone compiler for the academic static analysis playground language TIP.
 
+## Status
+
+![Build status](https://www.codeship.io/projects/c3423ce0-758a-0131-2f2d-4291c692b3e5/status)
+
 ## Purpose
 
 The tip project's current milestone is:
