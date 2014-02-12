@@ -18,11 +18,11 @@ TIP is meant as a playground for various static analysis tools. It is meant to c
 
 ### Current features
 
-* Lexer/parser creating a nice tree representation of the source code in [hiccup style](https://github.com/weavejester/hiccup).
+* Lexer/parser creating a nice abstract syntax tree of the source code in [hiccup style](https://github.com/weavejester/hiccup).
 
 ### Upcoming features
 
-* ?
+* Control flow graph.
 
 ## License
 
