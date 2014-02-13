@@ -99,5 +99,5 @@
     "pointer-expression-address")
   (succeeds "Pointer value operation should be accepted."
     "pointer-expression-value")
-  (succeeds "Pointers in function parameters should be rejected."
+  (fails "Pointers in function parameters should be rejected."
     "pointer-parameter"))
