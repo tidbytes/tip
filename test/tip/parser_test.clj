@@ -4,9 +4,43 @@
             [tip.parser :refer [grammar]]
             [instaparse.core :refer [failure?]]))
 
-(defn parse-tip
+(defn- parse-tip
   [filename]
+  "Internal function used to avoid writing out full paths and parse calls for
+   TIP source files."
   (grammar (slurp (str "test/tip/code/" filename ".tip"))))
+
+(defn- parse-status
+  [succeeds]
+  "Internal function used to avoid duplication in `succeeds` and `fails`."
+  (fn [string filenames]
+    (fact string
+      (doseq [f filenames]
+        (failure? (parse-tip f)) => (not succeeds)))))
+
+(defn succeeds
+  [string & filenames]
+  "Shorter notation for expressing 'all given filenames must be parsable TIP
+   programs' using the fact string `string`.
+
+   Unfolds to:
+   (fact string
+     (failure? (parse-tip filename1)) => false
+     (failure? (parse-tip filename2)) => false
+     ...)"
+  ((parse-status true) string filenames))
+
+(defn fails
+  [string & filenames]
+  "Shorter notation for expressing 'all given filenames must NOT be parsable
+   TIP programs' using the fact string `string`.
+   
+   Unfolds to:
+   (fact string
+     (failure? (parse-tip filename1)) => true
+     (failure? (parse-tip filename2)) => true
+     ...)"
+  ((parse-status false) string filenames))
 
 (facts "About whitespace"
   (fact "Source code functions differing only by their whitespace should
@@ -15,83 +49,55 @@
       (apply = (rest parse-tree)) => true)))
 
 (facts "About expressions"
-  (let [constants (parse-tip "expression-constant")
-        identifiers (parse-tip "expression-identifier")
-        comparison1 (parse-tip "expression-comparison-less")
-        comparison2 (parse-tip "expression-comparison-equal")
-        comparison3 (parse-tip "expression-comparison-greater")
-        arithmetics1 (parse-tip "expression-arithmetics-addition")
-        arithmetics2 (parse-tip "expression-arithmetics-subtraction")
-        arithmetics3 (parse-tip "expression-arithmetics-multiplication")
-        arithmetics4 (parse-tip "expression-arithmetics-division")
-        parentheses (parse-tip "expression-parentheses")
-        input (parse-tip "expression-input")
-        null (parse-tip "expression-null")
-        dynamic-call (parse-tip "expression-dynamic-call")
-        function-call (parse-tip "expression-function-call")
-        malloc (parse-tip "expression-malloc")]
-    (fact "Constants should be expressions."
-      (failure? constants) => false)
-    (fact "Identifiers should be expressions."
-      (failure? identifiers) => false)
-    (fact "Comparisons should be expressions."
-      (failure? comparison1) => false
-      (failure? comparison2) => false
-      (failure? comparison3) => false)
-    (fact "Arithmetic calculations should be expressions."
-      (failure? arithmetics1) => false
-      (failure? arithmetics2) => false
-      (failure? arithmetics3) => false
-      (failure? arithmetics4) => false)
-    (fact "Parenthesized expressions should be expressions."
-      (failure? parentheses) => false)
-    (fact "Reading user input should be an expression."
-      (failure? input) => false)
-    (fact "Null references should be expressions."
-      (failure? null) => false)
-    (fact "Dynamic function calls should be expressions."
-      (failure? dynamic-call) => false)
-    (fact "Function calls should be expressions."
-      (failure? function-call) => false)
-    (fact "Allocating memory should be an expression."
-      (failure? malloc) => false)))
+  (succeeds"Constants should be expressions."
+    "expression-constant")
+  (succeeds "Identifiers should be expressions."
+    "expression-identifier")
+  (succeeds "Comparisons should be expressions."
+    "expression-comparison-less"
+    "expression-comparison-equal"
+    "expression-comparison-greater")
+  (succeeds "Arithmetic calculations should be expressions."
+    "expression-arithmetics-addition"
+    "expression-arithmetics-subtraction"
+    "expression-arithmetics-multiplication"
+    "expression-arithmetics-division")
+  (succeeds "Parenthesized expressions should be expressions."
+    "expression-parentheses")
+  (succeeds "Reading user input should be an expression."
+    "expression-input")
+  (succeeds "Null references should be expressions."
+    "expression-null")
+  (succeeds "Dynamic function calls should be expressions."
+    "expression-dynamic-call")
+  (succeeds "Function calls should be expressions."
+    "expression-function-call")
+  (succeeds "Allocating memory should be an expression."
+    "expression-malloc"))
 
 (facts "About statements"
-  (let [assignment (parse-tip "statement-assignment")
-        if-short (parse-tip "statement-if")
-        if-block (parse-tip "statement-if-block")
-        if-else-short (parse-tip "statement-if-else")
-        if-else-block (parse-tip "statement-if-else-block")
-        output (parse-tip "statement-output")
-        var-decl (parse-tip "statement-var-decl")
-        while-short (parse-tip "statement-while")
-        while-block (parse-tip "statement-while-block")]
-    (fact "Assignments of values should be statements."
-      (failure? assignment) => false)
-    (fact "If statements should be statements."
-      (failure? if-short) => false
-      (failure? if-block) => false)
-    (fact "If-then-else statements should be statements."
-      (failure? if-else-short) => false
-      (failure? if-else-block) => false)
-    (fact "Writing an expression to output should be a statement"
-      (failure? output) => false)
-    (fact "Variable declarations should be statements."
-      (failure? var-decl) => false)
-    (fact "While loops should be statements."
-      (failure? while-short) => false
-      (failure? while-block) => false)))
+  (succeeds "Assignments of values should be statements."
+    "statement-assignment")
+  (succeeds "If statements should be statements."
+    "statement-if"
+    "statement-if-block")
+  (succeeds "If-then-else statements should be statements."
+    "statement-if-else"
+    "statement-if-else-block")
+  (succeeds "Writing an expression to output should be a statement"
+    "statement-output")
+  (succeeds "Variable declarations should be statements."
+    "statement-var-decl")
+  (fact "While loops should be statements."
+    "statement-while"
+    "statement-while-block"))
 
 (facts "About pointers"
-  (let [pointer-assignment (parse-tip "pointer-assignment")
-        pointer-expression-address (parse-tip "pointer-expression-address")
-        pointer-expression-value (parse-tip "pointer-expression-value")
-        pointer-parameter (parse-tip "pointer-parameter")]
-    (fact "Pointer assignments should be accepted."
-      (failure? pointer-assignment) => false)
-    (fact "Pointer address operation should be accepted."
-      (failure? pointer-expression-address) => false)
-    (fact "Pointer value operation should be accepted."
-      (failure? pointer-expression-value) => false)
-    (fact "Pointers in function parameters should be rejected."
-      (failure? pointer-parameter) => true)))
+  (succeeds "Pointer assignments should be accepted."
+    "pointer-assignment")
+  (succeeds "Pointer address operation should be accepted."
+    "pointer-expression-address")
+  (succeeds "Pointer value operation should be accepted."
+    "pointer-expression-value")
+  (succeeds "Pointers in function parameters should be rejected."
+    "pointer-parameter"))
