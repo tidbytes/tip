@@ -1,14 +1,14 @@
 (ns tip.parser-test
   (:require [clojure.test :refer :all]
             [midje.sweet :refer :all]
-            [tip.parser :refer [grammar]]
+            [tip.parser :refer [parser]]
             [instaparse.core :refer [failure?]]))
 
 (defn- parse-tip
   [filename]
   "Internal function used to avoid writing out full paths and parse calls for
    TIP source files."
-  (grammar (slurp (str "test/tip/code/" filename ".tip"))))
+  (parser (slurp (str "test/tip/code/" filename ".tip"))))
 
 (defn- parse-status
   [succeeds]
