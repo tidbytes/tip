@@ -1,6 +1,6 @@
 (ns tip.core
   (:require [clojure.pprint :refer [pprint]]
-            [tip.parser :refer [grammar]]))
+            [tip.parser :refer [parser]]))
 
 (defn -main
   [& args]
@@ -9,7 +9,7 @@
       (println "Parsing" file)
       (-> file
         slurp
-        grammar
+        parser
         pprint))
     (println "You did not supply any TIP source file.\n"
              "- Proper use:\n"
