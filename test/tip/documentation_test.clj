@@ -1,5 +1,6 @@
 (ns tip.documentation-test
-  (:require [midje.sweet :refer :all]
+  (:require [clojure.test :refer :all]
+            [midje.sweet :refer :all]
             [tip.core :as core]
             [tip.parser :as parser]))
 
@@ -33,8 +34,9 @@
     (map :name)
     (into #{})))
 
+(deftest documentation-test
 (facts "About documentation."
   (fact "All public mappings in `tip.core` must have docstrings."
     (docless-mappings-in-ns 'tip.core) => #{})
   (fact "All public mappings in `tip.parser` must have docstrings."
-    (docless-mappings-in-ns 'tip.parser) => #{}))
+    (docless-mappings-in-ns 'tip.parser) => #{})))
