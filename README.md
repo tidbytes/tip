@@ -8,6 +8,8 @@ A barebone compiler for the academic static analysis playground language Tiny Im
 
 ![Build status](https://www.codeship.io/projects/bd9e0000-7597-0131-79fd-32f3c34aacd4/status?branch=master)
 
+[![Coverage Status](https://coveralls.io/repos/tidbytes/tip/badge.png)](https://coveralls.io/r/tidbytes/tip)
+
 **Latest commit**
 
 ![Build status](https://www.codeship.io/projects/bd9e0000-7597-0131-79fd-32f3c34aacd4/status)
