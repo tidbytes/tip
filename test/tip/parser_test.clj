@@ -42,62 +42,71 @@
      ...)"
   ((parse-status false) string filenames))
 
-(facts "About whitespace"
-  (fact "Source code functions differing only by their whitespace should
-         be considered equal after parsing."
-    (let [parse-tree (parse-tip "insignificant-whitespace")]
-      (apply = (rest parse-tree)) => true)))
+(deftest whitespace-test
+  (facts "About whitespace"
+    (fact "Source code functions differing only by their whitespace should
+           be considered equal after parsing."
+      (let [parse-tree (parse-tip "insignificant-whitespace")]
+        (apply = (rest parse-tree)) => true))))
 
-(facts "About expressions"
-  (succeeds"Constants should be expressions."
-    "expression-constant")
-  (succeeds "Identifiers should be expressions."
-    "expression-identifier")
-  (succeeds "Comparisons should be expressions."
-    "expression-comparison-less"
-    "expression-comparison-equal"
-    "expression-comparison-greater")
-  (succeeds "Arithmetic calculations should be expressions."
-    "expression-arithmetics-addition"
-    "expression-arithmetics-subtraction"
-    "expression-arithmetics-multiplication"
-    "expression-arithmetics-division")
-  (succeeds "Parenthesized expressions should be expressions."
-    "expression-parentheses")
-  (succeeds "Reading user input should be an expression."
-    "expression-input")
-  (succeeds "Null references should be expressions."
-    "expression-null")
-  (succeeds "Dynamic function calls should be expressions."
-    "expression-dynamic-call")
-  (succeeds "Function calls should be expressions."
-    "expression-function-call")
-  (succeeds "Allocating memory should be an expression."
-    "expression-malloc"))
+(deftest expression-test
+  (facts "About expressions"
+    (succeeds"Constants should be expressions."
+      "expression-constant")
+    (succeeds "Identifiers should be expressions."
+      "expression-identifier")
+    (succeeds "Comparisons should be expressions."
+      "expression-comparison-less"
+      "expression-comparison-equal"
+      "expression-comparison-greater")
+    (succeeds "Arithmetic calculations should be expressions."
+      "expression-arithmetics-addition"
+      "expression-arithmetics-subtraction"
+      "expression-arithmetics-multiplication"
+      "expression-arithmetics-division")
+    (succeeds "Parenthesized expressions should be expressions."
+      "expression-parentheses")
+    (succeeds "Reading user input should be an expression."
+      "expression-input")
+    (succeeds "Null references should be expressions."
+      "expression-null")
+    (succeeds "Dynamic function calls should be expressions."
+      "expression-dynamic-call")
+    (succeeds "Function calls should be expressions."
+      "expression-function-call")
+    (succeeds "Allocating memory should be an expression."
+      "expression-malloc")))
 
-(facts "About statements"
-  (succeeds "Assignments of values should be statements."
-    "statement-assignment")
-  (succeeds "If statements should be statements."
-    "statement-if"
-    "statement-if-block")
-  (succeeds "If-then-else statements should be statements."
-    "statement-if-else"
-    "statement-if-else-block")
-  (succeeds "Writing an expression to output should be a statement"
-    "statement-output")
-  (succeeds "Variable declarations should be statements."
-    "statement-var-decl")
-  (fact "While loops should be statements."
-    "statement-while"
-    "statement-while-block"))
+(deftest statement-test
+  (facts "About statements"
+    (succeeds "Assignments of values should be statements."
+      "statement-assignment")
+    (succeeds "If statements should be statements."
+      "statement-if"
+      "statement-if-block")
+    (succeeds "If-then-else statements should be statements."
+      "statement-if-else"
+      "statement-if-else-block")
+    (succeeds "Writing an expression to output should be a statement"
+      "statement-output")
+    (succeeds "Variable declarations should be statements."
+      "statement-var-decl")
+    (fact "While loops should be statements."
+      "statement-while"
+      "statement-while-block")))
 
-(facts "About pointers"
-  (succeeds "Pointer assignments should be accepted."
-    "pointer-assignment")
-  (succeeds "Pointer address operation should be accepted."
-    "pointer-expression-address")
-  (succeeds "Pointer value operation should be accepted."
-    "pointer-expression-value")
-  (fails "Pointers in function parameters should be rejected."
-    "pointer-parameter"))
+(deftest pointer-test
+  (facts "About pointers"
+    (succeeds "Pointer assignments should be accepted."
+      "pointer-assignment")
+    (succeeds "Pointer address operation should be accepted."
+      "pointer-expression-address")
+    (succeeds "Pointer value operation should be accepted."
+      "pointer-expression-value")
+    (fails "Pointers in function parameters should be rejected."
+      "pointer-parameter")))
+
+(deftest ebnf-test
+  (facts "About the EBNF document."
+    (fact "The ENBF should exist as a file called `src/tip/tip.ebnf`"
+      (slurp "src/tip/tip.ebnf") => (complement empty?))))
